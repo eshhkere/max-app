@@ -1,0 +1,22 @@
+<section class="music-menu">
+  <h2 class="music-menu__title">Focus tracks</h2>
+
+  <ul class="music-menu__list">
+    <li
+      class="music-menu__item"
+      *ngFor="let track of tracks"
+      [class.music-menu__item--active]="track.id === activeTrackId"
+    >
+      <div class="music-menu__meta">
+        <span class="music-menu__name">{{ track.title }}</span>
+        <span class="music-menu__artist">{{ track.artist }}</span>
+      </div>
+      <div class="music-menu__actions">
+        <button type="button" (click)="onPreview(track)">Preview</button>
+        <button type="button" (click)="onSelect(track)" [disabled]="!track.unlocked">Select</button>
+        <button type="button" (click)="onUnlock(track)" *ngIf="!track.unlocked">Unlock</button>
+      </div>
+    </li>
+  </ul>
+</section>
+

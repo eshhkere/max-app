@@ -1,0 +1,20 @@
+<div class="session">
+  <header class="session__header">
+    <h1>Фокус-сессия</h1>
+    <p>Session ID: {{ sessionId() }}</p>
+  </header>
+
+  <div class="session__timer">
+    <h2>{{ getFormattedTime() }}</h2>
+  </div>
+
+  <div class="session__motivation">
+    <p>{{ motivationPhrase() }}</p>
+  </div>
+
+  <div class="session__controls">
+    <button class="session__cancel-btn" (click)="onCancel()">
+      Сдаться
+    </button>
+  </div>
+</div>

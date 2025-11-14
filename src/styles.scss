@@ -1,1 +1,79 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: linear-gradient(180deg, #FF9DEB 0%, #557DEA 100%);
+  position: relative;
+  
+  /* Размытый фон с зеркальным отражением */
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/assets/images/bg.png');
+    background-size: auto 100%; /* Растягиваем по высоте */
+    background-position: center;
+    background-repeat: repeat-x; /* Повторяем по горизонтали */
+    filter: blur(40px) brightness(1.2); /* Сильнее размываем + осветляем */
+    opacity: 0.5; /* Делаем полупрозрачным */
+    transform: scaleX(2); /* Растягиваем по ширине */
+    z-index: 0;
+  }
+  
+  /* Градиентная маска по краям */
+  &::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      linear-gradient(90deg, 
+        rgba(255, 157, 235, 0.8) 0%, 
+        transparent 20%, 
+        transparent 80%, 
+        rgba(85, 125, 234, 0.8) 100%
+      );
+    z-index: 0;
+  }
+}
+
+app-root {
+  position: relative;
+  z-index: 1;
+  display: block;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6, p, ul, ol, li {
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}

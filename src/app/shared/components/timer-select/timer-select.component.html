@@ -1,0 +1,26 @@
+<div class="timer-select-overlay" (click)="onClose()">
+  <section class="timer-select" (click)="$event.stopPropagation()">
+    <header class="timer-select__header">
+      <h2 class="timer-select__title">{{ getTitle() }}</h2>
+      <button type="button" class="timer-select__close" (click)="onClose()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M12.9375 0.75L0.75 12.9375M0.75 0.75L12.9375 12.9375" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </header>
+
+    <div class="timer-select__grid">
+      <button
+        *ngFor="let option of timerOptions()"
+        class="timer-select__option"
+        [class.timer-select__option--active]="option.minutes === selectedMinutes()"
+        (click)="onSelectTime(option.minutes)">
+        {{ option.label }}
+      </button>
+    </div>
+
+    <button class="timer-select__confirm" (click)="onConfirm()">
+      Подтвердить
+    </button>
+  </section>
+</div>

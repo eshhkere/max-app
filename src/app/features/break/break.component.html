@@ -1,0 +1,8 @@
+<app-header [balance]="balance()" [progress]="progress()"></app-header>
+
+<main class="break">
+  <app-timer-display [remainingMs]="remainingMs()" statusLabel="Break"></app-timer-display>
+
+  <app-icon-button icon="stop" label="End break" (pressed)="onEndBreak()"></app-icon-button>
+</main>
+

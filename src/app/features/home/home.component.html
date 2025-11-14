@@ -1,0 +1,158 @@
+<div class="home">
+  <header class="home__header">
+    <button class="home__menu-btn" aria-label="Menu" (click)="onMenuClick()">
+      <svg width="30" height="20" viewBox="0 0 30 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1.66667 20C1.19445 20 0.798895 19.84 0.480006 19.52C0.161117 19.2 0.00111686 18.8044 5.74712e-06 18.3333C-0.00110536 17.8622 0.158895 17.4667 0.480006 17.1467C0.801117 16.8267 1.19667 16.6667 1.66667 16.6667H28.3333C28.8056 16.6667 29.2017 16.8267 29.5217 17.1467C29.8417 17.4667 30.0011 17.8622 30 18.3333C29.9989 18.8044 29.8389 19.2006 29.52 19.5217C29.2011 19.8428 28.8056 20.0022 28.3333 20H1.66667ZM1.66667 11.6667C1.19445 11.6667 0.798895 11.5067 0.480006 11.1867C0.161117 10.8667 0.00111686 10.4711 5.74712e-06 10C-0.00110536 9.52889 0.158895 9.13333 0.480006 8.81333C0.801117 8.49333 1.19667 8.33333 1.66667 8.33333H28.3333C28.8056 8.33333 29.2017 8.49333 29.5217 8.81333C29.8417 9.13333 30.0011 9.52889 30 10C29.9989 10.4711 29.8389 10.8672 29.52 11.1883C29.2011 11.5094 28.8056 11.6689 28.3333 11.6667H1.66667ZM1.66667 3.33333C1.19445 3.33333 0.798895 3.17333 0.480006 2.85333C0.161117 2.53333 0.00111686 2.13778 5.74712e-06 1.66667C-0.00110536 1.19556 0.158895 0.8 0.480006 0.48C0.801117 0.16 1.19667 0 1.66667 0H28.3333C28.8056 0 29.2017 0.16 29.5217 0.48C29.8417 0.8 30.0011 1.19556 30 1.66667C29.9989 2.13778 29.8389 2.53389 29.52 2.855C29.2011 3.17611 28.8056 3.33556 28.3333 3.33333H1.66667Z" fill="white"/>
+      </svg>
+    </button>
+    
+    <div class="home__balance" *ngIf="!isTimerRunning()">
+      <svg width="23" height="23" viewBox="0 0 23 23" fill="none">
+        <g clip-path="url(#clip0)">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M16.5312 20.125C20.1106 20.125 23 18.6875 23 16.5312V2.875C23 1.4375 20.125 0 16.5312 0C12.9375 0 10.0625 1.4375 10.0625 2.875V7.90625C11.7444 8.61063 13.1819 9.78938 14.2025 11.2844C14.9069 11.4224 15.6831 11.4986 16.5312 11.4986C18.4144 11.4986 19.9813 11.1234 21.1025 10.5124C21.2617 10.4249 21.4166 10.33 21.5668 10.2278V12.2116C21.5668 12.5494 21.298 13.0741 20.4139 13.5571C19.5572 14.0243 18.2433 14.3678 16.5327 14.3678C16.1906 14.3678 15.8647 14.3549 15.5552 14.329C15.6702 14.8015 15.7469 15.2854 15.7852 15.7809C16.0276 15.7943 16.2768 15.801 16.5327 15.801C18.4158 15.801 19.9827 15.4258 21.1039 14.8149C21.2631 14.7274 21.4181 14.6324 21.5682 14.5302V16.514C21.5682 16.8533 21.3541 17.3564 20.4312 17.8538C19.5227 18.3425 18.1599 18.6702 16.5356 18.6702C16.2049 18.6702 15.8849 18.6568 15.5753 18.63C15.4648 19.1078 15.3163 19.576 15.1311 20.0301C15.5835 20.0809 16.0511 20.1063 16.5341 20.1063L16.5312 20.125Z" fill="white"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12.9375 16.5312C12.9375 20.1106 10.0481 23 6.46875 23C2.88937 23 0 20.1106 0 16.5312C0 12.9519 2.88937 10.0625 6.46875 10.0625C10.0481 10.0625 12.9375 12.9519 12.9375 16.5312Z" fill="white"/>
+        </g>
+      </svg>
+      <span>{{ balance() }}</span>
+    </div>
+
+    <button class="home__music-btn" *ngIf="isTimerRunning()" (click)="onMusicClick()">
+      <svg width="70" height="64" viewBox="0 0 70 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M35 1.5C53.6309 1.5 68.5 15.279 68.5 32C68.5 48.721 53.6309 62.5 35 62.5C16.3691 62.5 1.5 48.721 1.5 32C1.5 15.279 16.3691 1.5 35 1.5Z" fill="url(#paint0_linear_0_1)" fill-opacity="0.7" stroke="#9750C0" stroke-width="3"/>
+        <path d="M25.5 43.25C27.5711 43.25 29.25 41.5711 29.25 39.5C29.25 37.4289 27.5711 35.75 25.5 35.75C23.4289 35.75 21.75 37.4289 21.75 39.5C21.75 41.5711 23.4289 43.25 25.5 43.25Z" fill="#9751C0" stroke="#9751C0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M40.5 42C42.5711 42 44.25 40.3211 44.25 38.25C44.25 36.1789 42.5711 34.5 40.5 34.5C38.4289 34.5 36.75 36.1789 36.75 38.25C36.75 40.3211 38.4289 42 40.5 42Z" fill="#9751C0" stroke="#9751C0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M44.25 20.75L29.25 24.5V29.5L44.25 25.75V20.75Z" fill="#9751C0"/>
+        <path d="M29.25 39.5V29.5M29.25 29.5V24.5L44.25 20.75V25.75M29.25 29.5L44.25 25.75M44.25 38.25V25.75" stroke="#9751C0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <defs>
+          <linearGradient id="paint0_linear_0_1" x1="35" y1="0" x2="35" y2="64" gradientUnits="userSpaceOnUse">
+            <stop offset="0.399038" stop-color="white"/>
+            <stop offset="1" stop-color="#914FC0"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </button>
+  </header>
+
+<!-- Персонаж в SVG форме -->
+<div class="home__character-container">
+  <div class="home__character-bg">
+    <!-- Полный SVG ромбовидная форма из Figma -->
+    <svg class="character-shape" width="277" height="361" viewBox="0 0 277 361" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g opacity="0.5">
+        <mask id="path-1-inside-1_2475_2049" fill="white">
+          <path d="M138.085 360.311C61.8697 360.34 0.0614425 298.579 0.0324311 222.363L0.000338256 138.053C-0.0286732 61.8376 61.7325 0.0294816 137.948 0.000470149C214.163 -0.0285413 275.971 61.7326 276 137.948L276.032 222.258C276.061 298.474 214.3 360.282 138.085 360.311Z"/>
+        </mask>
+        <path d="M138.085 360.311C61.8697 360.34 0.0614425 298.579 0.0324311 222.363L0.000338256 138.053C-0.0286732 61.8376 61.7325 0.0294816 137.948 0.000470149C214.163 -0.0285413 275.971 61.7326 276 137.948L276.032 222.258C276.061 298.474 214.3 360.282 138.085 360.311Z" fill="url(#paint0_linear_2475_2049)"/>
+        <g clip-path="url(#paint1_angular_2475_2049_clip_path)" data-figma-skip-parse="true" mask="url(#path-1-inside-1_2475_2049)">
+          <g transform="matrix(0.000136711 0.180362 -0.138158 0.000104721 137.948 179.949)">
+            <foreignObject x="-1101.21" y="-1101.21" width="2202.42" height="2202.42">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="background:conic-gradient(from 90deg,rgba(255, 236, 251, 1) 0deg,rgba(255, 0, 199, 1) 178.269deg,rgba(255, 124, 226, 1) 204.231deg,rgba(255, 255, 255, 1) 226.731deg,rgba(255, 255, 255, 1) 346.154deg,rgba(255, 236, 251, 1) 360deg);height:100%;width:100%;opacity:1"></div>
+            </foreignObject>
+          </g>
+        </g>
+        <path d="M0.0324311 222.363L14.0324 222.358L14.0003 138.048L0.000338256 138.053L-13.9997 138.058L-13.9676 222.369L0.0324311 222.363ZM276 137.948L262 137.953L262.032 222.264L276.032 222.258L290.032 222.253L290 137.943L276 137.948ZM276.032 222.258L262.032 222.264C262.058 290.747 206.563 346.285 138.08 346.311L138.085 360.311L138.09 374.311C222.038 374.279 290.064 306.2 290.032 222.253L276.032 222.258ZM137.948 0.000470149L137.953 14.0005C206.436 13.9744 261.974 69.47 262 137.953L276 137.948L290 137.943C289.968 53.9953 221.89 -14.0315 137.942 -13.9995L137.948 0.000470149ZM0.000338256 138.053L14.0003 138.048C13.9743 69.5643 69.4698 14.0265 137.953 14.0005L137.948 0.000470149L137.942 -13.9995C53.9952 -13.9676 -14.0316 54.1109 -13.9997 138.058L0.000338256 138.053ZM0.0324311 222.363L-13.9676 222.369C-13.9356 306.316 54.143 374.343 138.09 374.311L138.085 360.311L138.08 346.311C69.5963 346.337 14.0585 290.841 14.0324 222.358L0.0324311 222.363Z" mask="url(#path-1-inside-1_2475_2049)"/>
+      </g>
+      <defs>
+        <clipPath id="paint1_angular_2475_2049_clip_path">
+          <path d="M0.0324311 222.363L14.0324 222.358L14.0003 138.048L0.000338256 138.053L-13.9997 138.058L-13.9676 222.369L0.0324311 222.363ZM276 137.948L262 137.953L262.032 222.264L276.032 222.258L290.032 222.253L290 137.943L276 137.948ZM276.032 222.258L262.032 222.264C262.058 290.747 206.563 346.285 138.08 346.311L138.085 360.311L138.09 374.311C222.038 374.279 290.064 306.2 290.032 222.253L276.032 222.258ZM137.948 0.000470149L137.953 14.0005C206.436 13.9744 261.974 69.47 262 137.953L276 137.948L290 137.943C289.968 53.9953 221.89 -14.0315 137.942 -13.9995L137.948 0.000470149ZM0.000338256 138.053L14.0003 138.048C13.9743 69.5643 69.4698 14.0265 137.953 14.0005L137.948 0.000470149L137.942 -13.9995C53.9952 -13.9676 -14.0316 54.1109 -13.9997 138.058L0.000338256 138.053ZM0.0324311 222.363L-13.9676 222.369C-13.9356 306.316 54.143 374.343 138.09 374.311L138.085 360.311L138.08 346.311C69.5963 346.337 14.0585 290.841 14.0324 222.358L0.0324311 222.363Z" mask="url(#path-1-inside-1_2475_2049)"/>
+        </clipPath>
+        <linearGradient id="paint0_linear_2475_2049" x1="137.948" y1="0.000470153" x2="138.085" y2="360.311" gradientUnits="userSpaceOnUse">
+          <stop offset="0.533653" stop-color="#7717C1"/>
+          <stop offset="0.615384" stop-color="#7717C1"/>
+          <stop offset="1" stop-color="#D9D9D9"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    
+    <!-- Эллипс-тень под персонажем -->
+    <svg class="character-shadow" width="145" height="71" viewBox="0 0 145 71" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="72.5" cy="35.5" rx="72.5" ry="35.5" fill="url(#paint0_radial_1703_3521)"/>
+      <defs>
+        <radialGradient id="paint0_radial_1703_3521" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(72.5 35.5) rotate(90) scale(35.5 72.5)">
+          <stop/>
+          <stop offset="0.807692" stop-color="#8A6EB8"/>
+        </radialGradient>
+      </defs>
+    </svg>
+
+    <!-- Персонаж -->
+    <app-avatar class="character-avatar" [videoSrc]="'/assets/videos/neutral_robot.webm'"></app-avatar>
+  </div>
+</div>
+
+
+  <!-- Карточка с таймером и кнопками -->
+  <div class="home__card">
+    <!-- Кнопка тега -->
+    <button class="home__tag-btn" (click)="onTagClick()">
+      <span class="home__tag-emoji">{{ activeTag()?.emoji || '🎓' }}</span>
+      <span>{{ activeTag()?.label || 'Учёба' }}</span>
+    </button>
+  
+    <!-- Таймер -->
+    <div class="home__timer" (click)="onTimerClick()">
+      {{ getTimerDisplay() }}
+    </div>
+
+    <!-- Кнопка Фокус -->
+    <button 
+      class="home__focus-btn" 
+      [class.home__focus-btn--active]="isFocusActive()"
+      (click)="onToggleFocus()">
+      <span>{{ getFocusButtonText() }}</span>
+      <div class="toggle-switch">
+        <div class="toggle-switch__slider"></div>
+      </div>
+    </button>
+
+    <!-- Кнопка Старт -->
+    <button 
+      class="home__start-btn" 
+      [class.home__start-btn--danger]="sessionState() === 'cancel' || sessionState() === 'focus'"
+      (click)="onActionButtonClick()">
+      {{ getActionButtonText() }}
+    </button>
+
+    <button 
+      style="position: fixed; top: 10px; right: 10px; z-index: 9999; padding: 10px; background: red; color: white;"
+      (click)="testOpenModal()">
+      TEST MODAL
+    </button>
+  </div>
+</div>
+
+<app-tag-menu
+  *ngIf="showTagModal()"
+  [tags]="availableTags"
+  [activeTagId]="activeTag()?.id || null"
+  (tagSelected)="onTagSelected($event)"
+  (commentChanged)="onCommentChanged($event)"
+  (closed)="onModalClosed()">
+</app-tag-menu>
+
+<app-timer-select
+  *ngIf="showTimerModal()"
+  [isFocusMode]="isFocusActive()"
+  [defaultMinutes]="selectedMinutes"
+  (timeSelected)="onTimeSelected($event)"
+  (closed)="onTimerModalClosed()">
+</app-timer-select>
+
+<app-give-up-modal
+  *ngIf="showGiveUpModal()"
+  (reasonSelected)="onGiveUpReasonSelected($event)"
+  (closed)="onGiveUpModalClosed()">
+</app-give-up-modal>
+
+<app-session-complete-modal
+  *ngIf="showCompleteModal() && completeData()"
+  [data]="completeData()!"
+  (takeBreak)="onTakeBreak()"
+  (cancel)="onCompleteCancel()">
+</app-session-complete-modal>
+
+<app-sidebar-menu
+  *ngIf="showSidebarMenu()"
+  (closed)="onMenuClosed()"
+  (itemSelected)="onMenuItemSelected($event)">
+</app-sidebar-menu>

@@ -1,0 +1,64 @@
+<!-- Overlay первой модалки -->
+<div class="tag-menu-overlay" (click)="onClose()">
+  <section class="tag-menu" (click)="$event.stopPropagation()">
+    <header class="tag-menu__header">
+      <h2 class="tag-menu__title">Смена тега</h2>
+      <button type="button" class="tag-menu__close" (click)="onClose()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M12.9375 0.75L0.75 12.9375M0.75 0.75L12.9375 12.9375" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </header>
+
+    <button class="tag-menu__dropdown" (click)="toggleTagList()">
+      <span class="tag-menu__dropdown-icon">{{ getSelectedTagEmoji() }}</span>
+      <span class="tag-menu__dropdown-text">{{ getSelectedTagLabel() }}</span>
+      <svg class="tag-menu__dropdown-arrow" width="12" height="8" viewBox="0 0 12 8" fill="none">
+        <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+    <label class="tag-menu__comment">
+      <textarea
+        class="tag-menu__comment-input"
+        placeholder="Запишите, что у вас на уме!"
+        maxlength="40"
+        [ngModel]="comment()"
+        (ngModelChange)="onCommentChange($event)">
+      </textarea>
+      <div class="tag-menu__comment-counter">{{ comment().length }}/40</div>
+    </label>
+
+    <button class="tag-menu__save-btn" (click)="onSave()">
+      Сохранить
+    </button>
+  </section>
+</div>
+
+<!-- Вторая модалка со списком тегов -->
+<div class="tag-list-overlay" *ngIf="showTagList()" (click)="closeTagList()">
+  <div class="tag-list" (click)="$event.stopPropagation()">
+    <button type="button" class="tag-list__close" (click)="closeTagList()">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M12.9375 0.75L0.75 12.9375M0.75 0.75L12.9375 12.9375" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <div
+      class="tag-list__item"
+      *ngFor="let tag of tags"
+      [class.tag-list__item--active]="tag.id === activeTagId"
+      (click)="onSelectTag(tag)">
+      <span class="tag-list__emoji">{{ tag.emoji }}</span>
+      <span class="tag-list__label">{{ tag.label }}</span>
+      <svg *ngIf="tag.id === activeTagId" class="tag-list__check" width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <circle cx="10" cy="10" r="10" fill="#A855F7"/>
+        <path d="M6 10L9 13L14 7" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <button class="tag-list__save" (click)="closeTagList()">
+      Сохранить
+    </button>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+<div class="give-up-overlay" (click)="onClose()">
+  <section class="give-up-modal" (click)="$event.stopPropagation()">
+    <header class="give-up-modal__header">
+      <h2 class="give-up-modal__title">Что помешало тебе сосредоточиться?</h2>
+    </header>
+
+    <div class="give-up-modal__reasons">
+      <button
+        *ngFor="let reason of reasons"
+        class="give-up-modal__reason"
+        [class.give-up-modal__reason--active]="reason.code === selectedReason()"
+        (click)="onSelectReason(reason.code)">
+        {{ reason.label }}
+      </button>
+    </div>
+  </section>
+</div>

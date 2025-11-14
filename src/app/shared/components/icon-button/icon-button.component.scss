@@ -1,0 +1,30 @@
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: inherit;
+  cursor: pointer;
+  transition: background 150ms ease, transform 150ms ease;
+}
+
+.icon-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.icon-button:not(:disabled):hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.icon-button:not(:disabled):active {
+  transform: scale(0.98);
+}
+
+.icon-button__icon {
+  font-family: 'Material Symbols Outlined', sans-serif;
+}
+

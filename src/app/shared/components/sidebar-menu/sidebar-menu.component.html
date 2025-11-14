@@ -1,0 +1,20 @@
+<div class="sidebar-overlay" (click)="onClose()"></div>
+<aside class="sidebar-menu">
+  <button type="button" class="sidebar-menu__close" (click)="onClose()">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M12.9375 0.75L0.75 12.9375M0.75 0.75L12.9375 12.9375"
+            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+  <nav class="sidebar-menu__nav">
+    <button
+      *ngFor="let item of menuItems"
+      class="sidebar-menu__item"
+      (click)="onItemClick(item.id)">
+      <svg class="sidebar-menu__icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path [attr.d]="getIconSvg(item.icon)" fill="currentColor"/>
+      </svg>
+      <span class="sidebar-menu__label">{{ item.label }}</span>
+    </button>
+  </nav>
+</aside>

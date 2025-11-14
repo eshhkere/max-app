@@ -1,0 +1,21 @@
+<app-header [balance]="balance()" [progress]="progress()"></app-header>
+
+<section class="currency">
+  <header class="currency__header">
+    <h1>My forest progress</h1>
+    <div class="currency__meta">
+      <span>Credits: {{ balance() }}</span>
+      <span>Level: 1</span>
+    </div>
+  </header>
+
+  <app-progress-bar [value]="progress()" [max]="100"></app-progress-bar>
+
+  <ul class="currency__rewards">
+    <li class="currency__reward" *ngFor="let reward of rewardsPreview">
+      <span>{{ reward.label }}</span>
+      <span>{{ reward.reward }}</span>
+    </li>
+  </ul>
+</section>
+
