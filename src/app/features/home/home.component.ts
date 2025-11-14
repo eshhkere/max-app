@@ -52,28 +52,16 @@ export class HomeComponent {
   readonly cancelSecondsLeft = this.sessionService.cancelSecondsLeft;
   readonly localTimerRunning = this.localTimer.isRunning;
 
-  // --- Главное: effect здесь! ---
-  readonly _effect = effect(async () => {
-    const state = this.sessionState();
-    console.log('🔥 sessionState changed:', state);
-  
-    // Только когда state стал COMPLETED и completeData еще пустой!
-    if (state === SessionState.COMPLETED && !this.completeData()) {
-      console.log('🚀 Calling onSessionComplete from effect');
-      // Забираем данные только ОДИН РАЗ!
-      const data = await this.sessionService.completeSession();
-      console.log('📥 Получены данные из completeSession:', data);
-      if (data) {
-        this.completeData.set(data);
-        this.showCompleteModal.set(true);
-        this.currencyService.balance.set(data.current_coins);
-      } else {
-        console.error('❌ Данные NULL, модалка не откроется!');
-      }
+  // ← СЛУШАЕМ ДАННЫЕ ИЗ СЕРВИСА, НЕ ВЫЗЫВАЕМ completeSession!
+  readonly _effect = effect(() => {
+    const data = this.sessionService.completeSessionData();
+    if (data) {
+      console.log('✅ Complete data received:', data);
+      this.completeData.set(data);
+      this.showCompleteModal.set(true);
+      this.currencyService.balance.set(data.current_coins);
     }
-  });
-  
-  // ------------------------
+  }, { allowSignalWrites: true });
 
   get selectedMinutes(): number {
     return this.isFocusActive() ? this.focusMinutes() : this.breakMinutes();
@@ -128,6 +116,7 @@ export class HomeComponent {
 
   async onActionButtonClick(): Promise<void> {
     const state = this.sessionState();
+
     if (!this.isFocusActive()) {
       if (this.localTimer.isRunning()) {
         this.localTimer.stopTimer();
@@ -136,15 +125,14 @@ export class HomeComponent {
       }
       return;
     }
+
     if (state === SessionState.IDLE) {
       const tag = this.activeTag()?.id || 'study';
       const comment = this.tagService.comment();
       await this.sessionService.startSession(tag, comment, this.selectedMinutes);
-    } 
-    else if (state === SessionState.CANCEL_PERIOD) {
+    } else if (state === SessionState.CANCEL_PERIOD) {
       await this.sessionService.cancelSession();
-    } 
-    else if (state === SessionState.FOCUS) {
+    } else if (state === SessionState.FOCUS) {
       this.showGiveUpModal.set(true);
     }
   }
@@ -158,26 +146,8 @@ export class HomeComponent {
     this.showGiveUpModal.set(false);
   }
 
-  async onSessionComplete(): Promise<void> {
-    console.log('📦 onSessionComplete() вызван');
-    console.log('🔍 completeData ПЕРЕД запросом:', this.completeData());
-    const data = await this.sessionService.completeSession();
-    console.log('📥 Получены данные из completeSession:', data);
-    if (data) {
-      console.log('✅ Данные валидны, заполняем completeData');
-      this.completeData.set(data);
-      console.log('✅ completeData ПОСЛЕ set:', this.completeData());
-      this.showCompleteModal.set(true);
-      console.log('✅ showCompleteModal ПОСЛЕ set:', this.showCompleteModal());
-      this.currencyService.balance.set(data.current_coins);
-    } else {
-      console.error('❌ Данные NULL, модалка не откроется!');
-    }
-  }
-
   onTakeBreak(): void {
     this.showCompleteModal.set(false);
-    console.log('🎉 Taking break');
   }
 
   onCompleteCancel(): void {
@@ -192,6 +162,7 @@ export class HomeComponent {
     if (!this.isFocusActive()) {
       return this.localTimer.isRunning() ? 'Отменить' : 'Старт';
     }
+
     const state = this.sessionState();
     switch (state) {
       case SessionState.IDLE:
@@ -213,11 +184,13 @@ export class HomeComponent {
       const mins = this.breakMinutes().toString().padStart(2, '0');
       return `${mins}:00`;
     }
+
     const state = this.sessionState();
     if (state === SessionState.IDLE) {
       const mins = this.focusMinutes().toString().padStart(2, '0');
       return `${mins}:00`;
     }
+
     return this.sessionService.getFormattedTime();
   }
 
@@ -250,17 +223,14 @@ export class HomeComponent {
   }
 
   testOpenModal(): void {
-    console.log('🧪 TEST: Opening modal manually');
     this.completeData.set({
-      current_coins: 44,
-      current_level: 1,
+      current_coins: 441,
+      current_level: 10,
       current_xp: 100,
-      earned_coins: 11,
-      earned_xp: 25,
-      max_level_xp: 300.0
+      earned_coins: 111,
+      earned_xp: 251,
+      max_level_xp: 3001.0
     });
     this.showCompleteModal.set(true);
-    console.log('🧪 TEST: showCompleteModal =', this.showCompleteModal());
-    console.log('🧪 TEST: completeData =', this.completeData());
   }
 }

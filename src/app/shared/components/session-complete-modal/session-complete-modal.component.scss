@@ -1,30 +1,30 @@
 .complete-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(8px);
-    z-index: 300;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: fadeIn 0.4s ease;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(2px);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: _ngcontent-ng-c43180058_fadeIn 0.4s ease;
   }
   
   .complete-modal {
-    background: linear-gradient(180deg, #E8E5F5 0%, #F5F5F5 100%);
+    background: #fff;
     border-radius: 32px;
     padding: 2rem 1.5rem;
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
     box-shadow: 0 12px 48px rgba(0, 0, 0, 0.3);
-    border: 6px solid #C8B7E8;
-    max-width: 380px;
+    border: 6px solid #D17CD0;
+    max-width: 340px;
     width: 90%;
-    animation: slideUpBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: _ngcontent-ng-c43180058_slideUpBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
   
   // Прогресс бар
@@ -36,8 +36,8 @@
   .complete-modal__progress-bar {
     width: 100%;
     height: 48px;
-    background: rgba(255, 255, 255, 0.6);
-    border: 3px solid #FFD700;
+    background: rgba(209, 124, 208, 0.2);
+    border: 3px solid #FF7DE3;
     border-radius: 24px;
     overflow: hidden;
     position: relative;
@@ -48,7 +48,7 @@
     height: 100%;
     background: linear-gradient(90deg, #FF69E8 0%, #FFD700 100%);
     border-radius: 20px;
-    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     
     // Анимация блеска
@@ -72,8 +72,9 @@
     font-size: 1rem;
     font-weight: 700;
     color: #333;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
-    z-index: 1;
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.9);
+    z-index: 2;
+    pointer-events: none;
   }
   
   // Уровень и награда
@@ -145,7 +146,7 @@
   }
   
   .complete-modal__btn--primary {
-    background: #8FB4D9;
+    background: #4492c1;
     color: white;
     box-shadow: 0 4px 12px rgba(143, 180, 217, 0.4);
   

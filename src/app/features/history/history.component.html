@@ -1,0 +1,14 @@
+<header class="history__header">
+    <button class="menu-btn"...></button>
+    <h1>История</h1>
+  </header>
+  <app-calendar [selectedDate]="selectedDate()" (selectDate)="onSelectDate($event)"></app-calendar>
+  <div class="history-list" *ngIf="history().length; else empty">
+    <div class="history-item" *ngFor="let item of history()">
+      <!-- тут кастомные блоки с tag, комментами, цветом по status -->
+    </div>
+  </div>
+  <ng-template #empty>
+    <div class="history-empty">Нет сессий за этот день</div>
+  </ng-template>
+  
