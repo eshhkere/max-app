@@ -1,0 +1,61 @@
+<div class="group-page">
+    <header class="group-page__header">
+      <button
+        class="group-page__menu-btn"
+        aria-label="Menu"
+        (click)="onMenuClick()">
+        <svg width="30" height="20" viewBox="0 0 30 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1.66667 20C1.19445 20 0.798895 19.84 0.480006 19.52C0.161117 19.2 0.00111686 18.8044 5.74712e-06 18.3333C-0.00110536 17.8622 0.158895 17.4667 0.480006 17.1467C0.801117 16.8267 1.19667 16.6667 1.66667 16.6667H28.3333C28.8056 16.6667 29.2017 16.8267 29.5217 17.1467C29.8417 17.4667 30.0011 17.8622 30 18.3333C29.9989 18.8044 29.8389 19.2006 29.52 19.5217C29.2011 19.8428 28.8056 20.0022 28.3333 20H1.66667ZM1.66667 11.6667C1.19445 11.6667 0.798895 11.5067 0.480006 11.1867C0.161117 10.8667 0.00111686 10.4711 5.74712e-06 10C-0.00110536 9.52889 0.158895 9.13333 0.480006 8.81333C0.801117 8.49333 1.19667 8.33333 1.66667 8.33333H28.3333C28.8056 8.33333 29.2017 8.49333 29.5217 8.81333C29.8417 9.13333 30.0011 9.52889 30 10C29.9989 10.4711 29.8389 10.8672 29.52 11.1883C29.2011 11.5094 28.8056 11.6689 28.3333 11.6667H1.66667ZM1.66667 3.33333C1.19445 3.33333 0.798895 3.17333 0.480006 2.85333C0.161117 2.53333 0.00111686 2.13778 5.74712e-06 1.66667C-0.00110536 1.19556 0.158895 0.8 0.480006 0.48C0.801117 0.16 1.19667 0 1.66667 0H28.3333C28.8056 0 29.2017 0.16 29.5217 0.48C29.8417 0.8 30.0011 1.19556 30 1.66667C29.9989 2.13778 29.8389 2.53389 29.52 2.855C29.2011 3.17611 28.8056 3.33556 28.3333 3.33333H1.66667Z" fill="white" />
+        </svg>
+      </button>
+    </header>
+  
+    <main class="group-page__content">
+      <section class="group-card">
+        <h2 class="group-card__title">Групповой режим 👥</h2>
+        <p class="group-card__description">
+          Совместные сессии с друзьями: старт вместе, прогресс на виду, бонус за выдержку.
+        </p>
+  
+        <div class="group-card__actions">
+          <button
+            type="button"
+            class="group-card__btn group-card__btn--primary"
+            (click)="onCreateRoom()">
+            Создать комнату
+          </button>
+  
+          <button
+            type="button"
+            class="group-card__btn group-card__btn--secondary"
+            (click)="onOpenJoinModal()">
+            Присоединиться
+          </button>
+        </div>
+      </section>
+    </main>
+  
+    <!-- модалки join/room -->
+    <app-group-join-modal
+      *ngIf="showJoinModal()"
+      (closed)="showJoinModal.set(false)"
+      (joined)="onJoinGroupRoom($event)">
+    </app-group-join-modal>
+  
+    <app-group-room-modal
+      *ngIf="showRoomModal()"
+      [roomCode]="roomCode || ''"
+      [isOwner]="isOwner"
+      [participants]="participants"
+      (closed)="onRoomClosed()"
+      (start)="onStartSession()">
+    </app-group-room-modal>
+  
+    <!-- сайдбар-меню -->
+    <app-sidebar-menu
+      *ngIf="showSidebarMenu()"
+      (closed)="onMenuClosed()"
+      (itemSelected)="onMenuItemSelected($event)">
+    </app-sidebar-menu>
+  </div>
+  

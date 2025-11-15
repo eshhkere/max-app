@@ -9,17 +9,17 @@ import {
   HeartbeatRequest,
   SessionState 
 } from '../models/session.model';
+import { BASE_URL } from '../../core/constants/base-url';
 
 @Injectable({ providedIn: 'root' })
 export class SessionService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = 'https://shop-stars-tg-bot.cloudpub.ru';
 
   readonly sessionId = signal<string | null>(null);
   readonly state = signal<SessionState>(SessionState.IDLE);
   readonly remainingSeconds = signal<number>(0);
   readonly cancelSecondsLeft = signal<number>(15);
-  readonly completeSessionData = signal<CompleteSessionResponse['data'] | null>(null); // ← НОВЫЙ SIGNAL!
+  readonly completeSessionData = signal<CompleteSessionResponse['data'] | null>(null);
 
   private heartbeatSubscription?: Subscription;
   private timerSubscription?: Subscription;
@@ -34,7 +34,7 @@ export class SessionService {
     try {
       console.log('📤 Starting session:', { tag, comment, planned_minutes: plannedMinutes });
       const response = await firstValueFrom(
-        this.http.post<StartSessionResponse>(`${this.baseUrl}/api/sessions/start`, {
+        this.http.post<StartSessionResponse>(`${BASE_URL}/api/sessions/start`, {
           tag,
           comment,
           planned_minutes: plannedMinutes
@@ -43,7 +43,7 @@ export class SessionService {
       console.log('📥 Session created:', response.data.session_id);
       this.sessionId.set(response.data.session_id);
       this.plannedMinutes = plannedMinutes;
-      this.completeSessionData.set(null); // ← СБРОС!
+      this.completeSessionData.set(null);
       this.state.set(SessionState.CANCEL_PERIOD);
       this.startCancelPeriod();
       this.startHeartbeat();
@@ -54,6 +54,8 @@ export class SessionService {
       throw error;
     }
   }
+
+  // ...весь остальной код не меняется, просто меняешь this.baseUrl → BASE_URL
 
   private startCancelPeriod(): void {
     this.cancelSecondsLeft.set(15);
@@ -68,7 +70,6 @@ export class SessionService {
   }
 
   private startFocusSession(): void {
-    console.log('🎯 Starting focus session');
     this.state.set(SessionState.FOCUS);
     this.focusStartTime = Date.now() / 1000;
     this.remainingSeconds.set(this.plannedMinutes * 60);
@@ -103,13 +104,12 @@ export class SessionService {
     if (!sid) return;
     try {
       await firstValueFrom(
-        this.http.post(`${this.baseUrl}/api/sessions/heartbeat`, {
+        this.http.post(`${BASE_URL}/api/sessions/heartbeat`, {
           session_id: sid
         } as HeartbeatRequest)
       );
-      console.log('✅ Heartbeat sent');
     } catch (error) {
-      console.error('❌ Heartbeat failed:', error);
+      // обработка ошибок
     }
   }
 
@@ -118,32 +118,23 @@ export class SessionService {
     if (!sid) return;
     try {
       await firstValueFrom(
-        this.http.post(`${this.baseUrl}/api/sessions/cancel`, {
+        this.http.post(`${BASE_URL}/api/sessions/cancel`, {
           session_id: sid,
           reason_code: reasonCode
         } as CancelSessionRequest)
       );
       this.cleanup();
       this.state.set(SessionState.CANCELLED);
-      console.log('✅ Session cancelled');
     } catch (error) {
-      console.error('❌ Failed to cancel session:', error);
       this.cleanup();
     }
   }
 
   async completeSession(): Promise<CompleteSessionResponse['data'] | null> {
     const sid = this.sessionId();
-    if (!sid) {
-      console.error('❌ No session_id for complete!');
-      return null;
-    }
+    if (!sid) return null;
     const currentState = this.state();
-    if (currentState === SessionState.COMPLETED || currentState === SessionState.CANCELLED) {
-      console.warn('⚠️ Session already finished');
-      return null;
-    }
-    console.log('🎉 Completing session:', sid);
+    if (currentState === SessionState.COMPLETED || currentState === SessionState.CANCELLED) return null;
     this.heartbeatSubscription?.unsubscribe();
     this.timerSubscription?.unsubscribe();
     this.cancelTimerSubscription?.unsubscribe();
@@ -152,25 +143,17 @@ export class SessionService {
     }
     try {
       const response = await firstValueFrom(
-        this.http.post<CompleteSessionResponse>(`${this.baseUrl}/api/sessions/complete`, {
+        this.http.post<CompleteSessionResponse>(`${BASE_URL}/api/sessions/complete`, {
           session_id: sid
         })
       );
-      console.log('✅ Session completed:', response.data);
-      
-      // ← СОХРАНЯЕМ ДАННЫЕ ВО ФРОНТА!
       this.completeSessionData.set(response.data);
-      
-      // Потом сетим state = COMPLETED
       this.state.set(SessionState.COMPLETED);
-      
       this.sessionId.set(null);
       this.remainingSeconds.set(0);
       this.focusStartTime = 0;
-      
       return response.data;
     } catch (error) {
-      console.error('❌ Failed to complete session:', error);
       this.sessionId.set(null);
       this.remainingSeconds.set(0);
       this.focusStartTime = 0;

@@ -4,6 +4,8 @@
     padding: 20px;
     box-shadow: 0 6px 32px rgba(151,81,192,0.08);
     width: 100%;
+    border: 6px solid #D17CD0;
+    margin-bottom: 20px;
   }
   .calendar__header {
     display: flex;
@@ -24,7 +26,8 @@
     text-align: center;
     padding-bottom: 4px;
     font-size: 1.1rem;
-    font-weight: 500;
+    font-weight: 600;
+    border-bottom: 1px solid #71747B;
   }
   .calendar__day {
     height: 32px;
@@ -36,6 +39,7 @@
     cursor: pointer;
     background: transparent;
     color: #333;
+    font-weight: 600;
     &:hover {
       background: #e8d5f7;
     }
@@ -50,4 +54,30 @@
       border: 2px solid #aa56d3;
     }
   }
-  
+
+  .calendar__header button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;          // ширина кружка
+    height: 32px;         // высота кружка
+    border-radius: 50%;   // круг
+    border: none;
+    background: rgba(255,255,255,0.8);
+    font-size: 22px;      // РАЗМЕР СТРЕЛКИ
+    line-height: 1;
+    padding: 0;           // чтобы не съедать высоту
+    cursor: pointer;
+    color: #9d57b5;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    transition: background 0.15s, transform 0.1s;
+
+    span {
+      margin-bottom: 5px;
+    }
+  }
+
+  .calendar__header button:hover {
+    background: #f3e2ff;
+    transform: translateY(-1px);
+  }

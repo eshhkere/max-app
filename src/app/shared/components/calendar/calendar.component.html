@@ -1,19 +1,21 @@
 <div class="calendar">
-    <div class="calendar__header">
-      <button (click)="setMonth(-1)">‹</button>
-      <span>{{ calendarDate() | date:'LLLL yyyy':'ru-RU' }}</span>
-      <button (click)="setMonth(1)">›</button>
-    </div>
-    <div class="calendar__days">
-      <div class="calendar__weekday" *ngFor="let d of ['П','В','С','Ч','П','С','В']">{{ d }}</div>
-      <div 
-        class="calendar__day"
-        *ngFor="let week of weeks(); let w = index"
-        [ngClass]="{ 'calendar__today': isToday(day, calendarDate()), 'calendar__selected': isSelected(day, calendarDate()) }"
+  <div class="calendar__header">
+    <button (click)="setMonth(-1)"><span>‹</span></button>
+    <span style="text-transform: capitalize;">{{ calendarDate() | date:'LLLL yyyy':'ru-RU' }}</span>
+    <button (click)="setMonth(1)"><span>›</span></button>
+  </div>
+  <div class="calendar__days">
+    <div class="calendar__weekday" *ngFor="let d of ['П','В','С','Ч','П','С','В']">{{ d }}</div>
+    <ng-container *ngFor="let week of weeks()">
+      <div class="calendar__day"
         *ngFor="let day of week"
+        [ngClass]="{ 
+          'calendar__today': day !== null && isToday(day, calendarDate()), 
+          'calendar__selected': day !== null && isSelected(day, calendarDate())
+        }"
         (click)="day && select(day)">
         {{ day || '' }}
       </div>
-    </div>
+    </ng-container>
   </div>
-  
+</div>

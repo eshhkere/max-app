@@ -10,18 +10,20 @@ export const APP_ROUTES: Routes = [
     path: 'home',
     loadComponent: () => import('./features/home/home.component').then((m) => m.HomeComponent),
   },
-  // {
-  //   path: 'session',
-  //   loadComponent: () => import('./features/session/session.component').then((m) => m.SessionComponent),
-  // },
-  // {
-  //   path: 'break',
-  //   loadComponent: () => import('./features/break/break.component').then((m) => m.BreakComponent),
-  // },
-  // {
-  //   path: 'currency',
-  //   loadComponent: () => import('./features/currency/currency.component').then((m) => m.CurrencyComponent),
-  // },
+  {
+    path: 'history',
+    loadComponent: () =>
+      import('../app/features/history/history.component').then((m) => m.HistoryComponent),
+  },
+  {
+    path: 'statistics',
+    loadComponent: () => import('../app/features/statistics/statistics.component').then(m => m.StatisticsComponent),
+  },
+  {
+    path: 'group',
+    loadComponent: () =>
+      import('../app/features/group-page/group-page.component').then(m => m.GroupPageComponent),
+  },
   // {
   //   path: 'music',
   //   loadComponent: () => import('./features/music/music.component').then((m) => m.MusicComponent),

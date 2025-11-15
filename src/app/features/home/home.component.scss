@@ -261,3 +261,43 @@
   }
 }
 
+/* чтобы позиционирование было относительно ромба */
+.home__character-bg {
+  position: relative; /* если уже задано — не дублируй */
+}
+
+/* контейнер всех мини‑персов */
+.home__group-bubbles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none; /* клики проходят сквозь картинки */
+}
+
+/* сами изображения мини‑персов с пузырьком */
+.home__group-bubble-img {
+  position: absolute;
+  width: 87px;
+  height: 87px;
+  object-fit: contain;
+  display: block;
+  z-index: 100000;
+}
+
+/* позиции трёх пузырьков */
+/* верхний левый */
+.home__group-bubble-img--1 {
+  top: 6%;
+  left: 76%;
+}
+
+/* верхний правый */
+.home__group-bubble-img--2 {
+  top: 19%;
+  left: -17%;
+}
+
+/* правый нижний */
+.home__group-bubble-img--3 {
+  bottom: 2%;
+  right: -7%;
+}

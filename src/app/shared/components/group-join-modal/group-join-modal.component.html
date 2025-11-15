@@ -1,0 +1,34 @@
+<div class="group-modal-overlay" (click)="onClose()">
+    <div class="group-modal" (click)="$event.stopPropagation()">
+      <button type="button" class="group-modal__close" (click)="onClose()">
+        ✕
+      </button>
+  
+      <div class="group-modal__header">
+        <h2 class="group-modal__title">Групповой режим 🤝</h2>
+        <p class="group-modal__description">Введите код комнаты</p>
+      </div>
+  
+      <div class="group-join__code-wrapper">
+        <input
+          type="text"
+          inputmode="numeric"
+          pattern="\d*"
+          maxlength="5"
+          class="group-join__code-input"
+          [value]="codeInput()"
+          (input)="onCodeInput($event)" />
+      </div>
+  
+      <div class="group-modal__actions">
+        <button
+          type="button"
+          class="group-modal__btn group-modal__btn--primary"
+          [disabled]="!codeInput()"
+          (click)="onJoin()">
+          Присоединиться
+        </button>
+      </div>
+    </div>
+  </div>
+  

@@ -1,0 +1,53 @@
+<!-- group-room-modal.component.html -->
+<div class="room-modal-overlay" (click)="onClose()">
+  <div class="room-modal" (click)="$event.stopPropagation()">
+    <button type="button" class="room-modal__close" (click)="onClose()">
+      ✕
+    </button>
+
+    <div class="room-modal__header">
+      <h2 class="room-modal__title">Групповой режим 🤝</h2>
+
+      <div class="room-modal__room-info">
+        <span class="room-modal__room-label">Комната</span>
+        <span class="room-modal__room-id">{{ roomCode }}</span>
+      </div>
+
+      <div class="room-modal__participants-count">
+        <span class="room-modal__count-label">Участники</span>
+        <span class="room-modal__count-value">
+          {{ participants.length }}/4
+        </span>
+      </div>
+    </div>
+
+    <div class="room-modal__participants">
+      <div
+        *ngFor="let p of participantSlots"
+        class="room-modal__participant"
+        [class.room-modal__participant--empty]="!p.name">
+        <div class="room-modal__participant-avatar">
+          <ng-container *ngIf="p.name; else emptySlot">
+            {{ p.name[0] }}
+          </ng-container>
+          <ng-template #emptySlot>
+            +
+          </ng-template>
+        </div>
+        <div class="room-modal__participant-name">
+          {{ p.name || 'Свободное место' }}
+        </div>
+      </div>
+    </div>
+
+    <button
+    *ngIf="isOwner"
+    type="button"
+    class="room-modal__start-btn"
+    (click)="onStart()">
+    Начать
+  </button>
+  
+  </div>
+</div>
+

@@ -1,6 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import { BASE_URL } from '../../core/constants/base-url';
 
 export interface InitRequest {
   max_id: number;
@@ -17,16 +18,8 @@ export interface UserProfile {
   coins: number;
   best_streak: number;
   act_char_id: number;
-  characters: Array<{
-    character_id: number;
-    exp: number;
-    level: number;
-    user_id: number;
-  }>;
-  musics: Array<{
-    music_id: number;
-    user_id: number;
-  }>;
+  characters: Array<{ character_id: number; exp: number; level: number; user_id: number; }>;
+  musics: Array<{ music_id: number; user_id: number; }>;
 }
 
 export interface InitResponse {
@@ -37,7 +30,6 @@ export interface InitResponse {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = 'https://shop-stars-tg-bot.cloudpub.ru/';
 
   readonly tokenSignal = signal<string | null>(null);
   readonly userSignal = signal<UserProfile | null>(null);
@@ -45,7 +37,7 @@ export class AuthService {
   async init(maxId: number, name: string, surname: string, avatarUrl: string): Promise<void> {
     try {
       const response = await firstValueFrom(
-        this.http.post<InitResponse>(`${this.baseUrl}/api/auth/init`, {
+        this.http.post<InitResponse>(`${BASE_URL}/api/auth/init`, {
           max_id: maxId,
           name,
           surname,
@@ -53,13 +45,10 @@ export class AuthService {
         } as InitRequest)
       );
 
-      // Сохраняем токен и профиль
       localStorage.setItem('access_token', response.access_token);
       localStorage.setItem('user_profile', JSON.stringify(response.profile));
-      
       this.tokenSignal.set(response.access_token);
       this.userSignal.set(response.profile);
-
       console.log('✅ Auth init successful:', response.profile);
     } catch (error) {
       console.error('❌ Auth init failed:', error);
@@ -82,15 +71,12 @@ export class AuthService {
     this.userSignal.set(null);
   }
 
-  // Загрузка токена из localStorage при старте
   loadFromStorage(): void {
     const token = localStorage.getItem('access_token');
     const profile = localStorage.getItem('user_profile');
-
     if (token) {
       this.tokenSignal.set(token);
     }
-
     if (profile) {
       this.userSignal.set(JSON.parse(profile));
     }

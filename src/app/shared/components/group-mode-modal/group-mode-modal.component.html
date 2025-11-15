@@ -1,0 +1,31 @@
+<!-- group-mode-modal.component.html -->
+<div class="group-modal-overlay" (click)="onClose()">
+  <div class="group-modal" (click)="$event.stopPropagation()">
+    <button type="button" class="group-modal__close" (click)="onClose()">
+      ✕
+    </button>
+
+    <div class="group-modal__header">
+      <h2 class="group-modal__title">Групповой режим 🤝</h2>
+      <p class="group-modal__description">
+        Совместные сессии с друзьями: старт вместе, прогресс на виду, бонус за выдержку.
+      </p>
+    </div>
+
+    <div class="group-modal__actions">
+      <button
+        type="button"
+        class="group-modal__btn group-modal__btn--primary"
+        (click)="onCreateRoom()">
+        Создать комнату
+      </button>
+
+      <button
+        type="button"
+        class="group-modal__btn group-modal__btn--secondary"
+        (click)="onJoinRoom()">
+        Присоединиться
+      </button>
+    </div>
+  </div>
+</div>

@@ -76,7 +76,32 @@
     </svg>
 
     <!-- Персонаж -->
-    <app-avatar class="character-avatar" [videoSrc]="'/assets/videos/neutral_robot.webm'"></app-avatar>
+    <app-avatar
+    class="character-avatar"
+    [videoSrc]="avatarVideoSrc">
+    </app-avatar>
+  
+
+    <div
+    class="home__group-bubbles"
+    *ngIf="isGroupRunning && otherParticipants.length > 0">
+    <img
+      *ngIf="otherParticipants[0]"
+      src="assets/images/mini-chel.png"
+      alt=""
+      class="home__group-bubble-img home__group-bubble-img--1" />
+    <img
+      *ngIf="otherParticipants[1]"
+      src="assets/images/mini-chel.png"
+      alt=""
+      class="home__group-bubble-img home__group-bubble-img--2" />
+    <img
+      *ngIf="otherParticipants[2]"
+      src="assets/images/mini-chel.png"
+      alt=""
+      class="home__group-bubble-img home__group-bubble-img--3" />
+  </div>
+  
   </div>
 </div>
 
@@ -111,12 +136,6 @@
       [class.home__start-btn--danger]="sessionState() === 'cancel' || sessionState() === 'focus'"
       (click)="onActionButtonClick()">
       {{ getActionButtonText() }}
-    </button>
-
-    <button 
-      style="position: fixed; top: 10px; right: 10px; z-index: 9999; padding: 10px; background: red; color: white;"
-      (click)="testOpenModal()">
-      TEST MODAL
     </button>
   </div>
 </div>

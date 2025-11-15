@@ -14,7 +14,6 @@
     left: 0;
     right: 0;
     bottom: 0;
-    backdrop-filter: blur(8px);
     z-index: 1;
     pointer-events: auto;
     animation: fadeIn 0.3s;
@@ -24,7 +23,7 @@
     position: absolute;
     top: 100px;
     left: 20px;
-    width: 220px;
+    width: 240px;
     height: 336px;
     background: linear-gradient(180deg, #C48DC0 2.88%, #A194F8 99.99%, #6C7EC0 100%);
     border: 6px solid #fff;

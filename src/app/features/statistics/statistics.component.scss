@@ -1,0 +1,377 @@
+  .statistics {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    .statistics__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 0 0 16px;
+      position: relative;
+      z-index: 10;
+    }
+    .statistics__menu-btn {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      border-radius: 12px;
+      padding: 0.75rem;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      &:hover { background: rgba(255,255,255,0.3); }
+    }
+    .statistics__label {
+      font-style: normal;
+      font-weight: 700;
+      font-size: 24px;
+      text-align: center;
+      letter-spacing: 0.08em;
+      color: #FFF;
+      margin-bottom: 10px;
+    }
+    .stat-switcher {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 5px;
+      button {
+        border-radius: 18px;
+        background: #fff;
+        border: none;
+        padding: 6px 18px;
+        font-weight: 600;
+        color: #914fc0;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background 0.2s;
+        &.active, &:hover {
+          background: #914fc0;
+          color: #fff;
+        }
+      }
+    }
+    .cal-nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      font-size: 20px;
+      font-weight: 600;
+      color: #8948e7;
+      margin-bottom: 12px;
+      button {
+        border-radius: 8px;
+        font-size: 22px;
+        background: rgba(255,255,255,.3);
+        color: #8948e7;
+        border: none;
+        cursor: pointer;
+      }
+    }
+    .stats-card-block {
+      display: flex;
+      flex-direction: row;
+      gap: 32px;
+    }
+    
+    .stat-scroll {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      max-height: calc(100vh - 260px); // подгони при желании
+      padding: 16px 0 32px;
+      display: flex;
+      flex-direction: column;
+      -webkit-overflow-scrolling: touch;
+    
+      /* кастомный скролл как в history */
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
+      &::-webkit-scrollbar-track {
+        background: transparent;
+        margin: 8px 0;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: rgb(154 62 227 / 30%);
+        border-radius: 8px;
+        border: 2px solid transparent;
+        background-clip: content-box;
+      }
+      &::-webkit-scrollbar-thumb:hover {
+        background: rgb(154 62 227 / 40%);
+      }
+      scrollbar-color: rgb(154 62 227 / 30%) transparent;
+      scrollbar-width: thin;
+    }
+    
+    /* можно переиспользовать красивый скролл, как в history */
+    .stat-scroll::-webkit-scrollbar {
+      width: 8px;
+    }
+    .stat-scroll::-webkit-scrollbar-track {
+      background: transparent;
+      margin: 8px 0;
+    }
+    .stat-scroll::-webkit-scrollbar-thumb {
+      background: #9a3ee3;
+      border-radius: 8px;
+      border: 2px solid transparent;
+      background-clip: content-box;
+    }
+    .stat-scroll {
+      scrollbar-color: rgb(154 62 227 / 30%) transparent;
+      scrollbar-width: thin;
+    }
+    
+    .stats-day-title {
+      margin: 10px 0 6px;
+      padding: 0 20px;
+      font-weight: 700;
+      font-size: 24px;
+      color: #833abb;
+    } 
+    
+    .stats-cards {
+      margin-bottom: 10px;
+      padding: 14px 14px 16px;
+      border-radius: 22px;
+      background: #ffffff;
+      box-shadow: 0 6px 12px rgba(62, 22, 112, 0.16);
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-auto-rows: 70px;
+      gap: 10px;
+      border: 4px solid #d17cd0;
+    }
+    
+    .stats-card {
+      position: relative;
+      border-radius: 16px;
+      padding: 10px 10px 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #4b4b4b;
+
+    }
+    
+    .stats-card:nth-child(1) {
+      background: linear-gradient(135deg, #f0c3ff 0%, #f7d8ff 100%);
+    }
+    .stats-card:nth-child(2) {
+      background: #f1f1f3;
+    }
+    .stats-card:nth-child(3) {
+      background: #dde7ff;
+    }
+    .stats-card:nth-child(4) {
+      background: #e2ddff;
+    }
+    
+    .stats-card-val {
+      font-size: 20px;
+      font-weight: 700;
+      color: #2c2444;
+    }
+    
+    .stats-card-label {
+      font-size: 11px;
+      font-weight: 500;
+      opacity: 0.9;
+      text-align: center;
+    }
+
+    .stats-card-text {
+      margin-top: 10px;
+    }
+    .streak-card-icon {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    
+    /* Стрики под большой карточкой */
+    .streak-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+      align-items: flex-start;   // ВАЖНО: не растягивать карточки по высоте
+    }
+    
+    .streak-card {
+      flex: 1 1 0;
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 8px 12px 10px;
+      box-shadow: 0 6px 20px rgba(62, 22, 112, 0.12);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 4px solid #d17cd0;
+    }
+    
+    .streak-title {
+      font-size: 11px;
+      font-weight: 500;
+      color: #6b5b8d;
+      margin-bottom: 4px;
+    }
+
+    .streak-center {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 2px;
+      margin-bottom: 4px;
+    }
+
+    .streak-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .streak-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #2c2444;
+      line-height: 1.1;
+    }
+    
+    .streak-info {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #a09bb8;
+    }
+
+    .focus-chart-card {
+      margin-bottom: 10px;
+      border-radius: 24px;
+      background: #ffffff;
+      box-shadow: 0 6px 12px rgba(62, 22, 112, 0.16);
+      border: 4px solid #d17cd0;
+    }
+    
+    .focus-chart-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #4c3266;
+      margin: 12px 0 0 12px;
+    }
+    
+    /* немного прижать сам график внутри карточки */
+    ::ng-deep .focus-chart-card .apexcharts-canvas {
+      margin-top: 4px;
+    }
+
+    .stats-row {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+    
+    .stats-square {
+      flex: 1 1 0;
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 8px 6px 8px 6px;
+      box-shadow: 0 6px 12px rgba(62, 22, 112, 0.16);
+      border: 4px solid #d17cd0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .sq-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #4c3266;
+      margin-bottom: 4px;
+    }
+    
+    .donut-wrap {
+      width: 100%;
+      max-width: 160px;
+    }
+    
+    ::ng-deep .stats-square .apexcharts-canvas {
+      margin-top: -4px;
+    }
+    
+    /* Легенда под пончиком */
+    .donut-legend {
+      margin-top: 6px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 4px 10px;
+    }
+    
+    .donut-legend-item {
+      display: flex;
+      align-items: center;
+      font-size: 11px;
+      color: #5a4a7d;
+    }
+    
+    .donut-legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      margin-right: 4px;
+    }
+    
+    .donut-legend-label {
+      white-space: nowrap;
+    }
+    
+    .period-selector {
+      margin: 0 20px 10px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #fff;
+      border: 4px solid #d17cd0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 10px rgba(62, 22, 112, 0.16);
+    }
+    
+    .period-selector__btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,0.9);
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+      color: #8b49b7;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+      transition: background 0.15s, transform 0.1s;
+    
+      &:hover {
+        background: #f3e2ff;
+        transform: translateY(-1px);
+      }
+    }
+    
+    .period-selector__label {
+      flex: 1;
+      text-align: center;
+      font-weight: 700;
+      font-size: 18px;
+      color: #7c3bb8;
+      text-transform: capitalize;
+    }
+    

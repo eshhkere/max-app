@@ -1,0 +1,111 @@
+.group-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .group-modal {
+    background: white;
+    border-radius: 32px;
+    padding: 2rem 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    border: 6px solid #d17cd0;
+    max-width: 340px;
+    width: 90%;
+    position: relative;
+  }
+  
+  .group-modal__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+  }
+  
+  .group-modal__header {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .group-modal__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #333;
+    margin: 0;
+  }
+  
+  .group-modal__description {
+    font-size: 0.9375rem;
+    color: #666;
+    text-align: center;
+    line-height: 1.6;
+    margin: 0.5rem 0 0;
+  }
+  
+  .group-modal__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+  
+  .group-modal__btn {
+    padding: 1rem;
+    border: none;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+  }
+  
+  .group-modal__btn--primary {
+    background: linear-gradient(135deg, #a855f7 0%, #8b5cf6 100%);
+    color: white;
+  }
+  
+  /* инпут кода */
+  .group-join__code-wrapper {
+    width: 100%;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .group-join__code-input {
+    width: 100%;
+    max-width: 220px;
+    padding: 0.85rem 1.5rem;
+    border-radius: 999px;
+    border: 2px solid #d17cd0;
+    font-size: 1.4rem;
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: 0.25em;
+    color: #333;
+    outline: none;
+  
+    &:focus {
+      border-color: #a855f7;
+      box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.25);
+    }
+  }
+  
