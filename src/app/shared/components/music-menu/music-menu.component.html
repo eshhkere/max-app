@@ -1,22 +1,44 @@
-<section class="music-menu">
-  <h2 class="music-menu__title">Focus tracks</h2>
+<div class="music-menu-overlay" (click)="onClose()">
+  <div class="music-menu" (click)="$event.stopPropagation()">
+    <button class="music-menu__close" type="button" (click)="onClose()">
+      ✕
+    </button>
 
-  <ul class="music-menu__list">
-    <li
-      class="music-menu__item"
-      *ngFor="let track of tracks"
-      [class.music-menu__item--active]="track.id === activeTrackId"
-    >
-      <div class="music-menu__meta">
-        <span class="music-menu__name">{{ track.title }}</span>
-        <span class="music-menu__artist">{{ track.artist }}</span>
-      </div>
-      <div class="music-menu__actions">
-        <button type="button" (click)="onPreview(track)">Preview</button>
-        <button type="button" (click)="onSelect(track)" [disabled]="!track.unlocked">Select</button>
-        <button type="button" (click)="onUnlock(track)" *ngIf="!track.unlocked">Unlock</button>
-      </div>
-    </li>
-  </ul>
-</section>
+    <h2 class="music-menu__title">Музыка для фокуса</h2>
 
+    <p class="music-menu__subtitle">
+      Выбери атмосферу, трек будет играть по кругу.
+    </p>
+
+    <div class="music-menu__list">
+      <button
+        class="music-menu__item"
+        type="button"
+        *ngFor="let track of tracks"
+        [class.music-menu__item--active]="track.id === activeTrackId"
+        (click)="onToggleTrack(track)">
+        <div class="music-menu__item-info">
+          <div class="music-menu__item-title">{{ track.title }}</div>
+          <div class="music-menu__item-desc">
+            {{ track.id === 'white'
+              ? 'Шум для максимальной концентрации'
+              : 'Фоновая музыка для фокуса' }}
+          </div>
+        </div>
+
+        <div class="music-menu__item-action">
+          <span
+            *ngIf="track.id === activeTrackId"
+            class="music-menu__btn music-menu__btn--pause">
+            Пауза
+          </span>
+          <span
+            *ngIf="track.id !== activeTrackId"
+            class="music-menu__btn music-menu__btn--play">
+            Старт
+          </span>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>

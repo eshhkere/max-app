@@ -1,33 +1,67 @@
-import { NgFor, NgIf } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { MusicTrack } from '../../../core/models/music.model';
+import { Component, EventEmitter, Output } from '@angular/core';
+
+interface InternalTrack {
+  id: string;
+  title: string;
+  src: string;
+}
 
 @Component({
   selector: 'app-music-menu',
   standalone: true,
-  imports: [NgFor, NgIf],
   templateUrl: './music-menu.component.html',
   styleUrls: ['./music-menu.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MusicMenuComponent {
-  @Input() tracks: MusicTrack[] = [];
-  @Input() activeTrackId: string | null = null;
+  @Output() closed = new EventEmitter<void>();
+  @Output() trackSelected = new EventEmitter<string | null>();
 
-  @Output() previewRequested = new EventEmitter<MusicTrack>();
-  @Output() trackSelected = new EventEmitter<MusicTrack>();
-  @Output() unlockRequested = new EventEmitter<MusicTrack>();
+  tracks: InternalTrack[] = [
+    { id: 'les',    title: 'Лес',        src: '/assets/music/les.mp3' },
+    { id: 'lofi',   title: 'Lo-fi',      src: '/assets/music/lofi.mp3' },
+    { id: 'oblaka', title: 'Облака',     src: '/assets/music/oblaka.mp3' },
+    { id: 'rain',   title: 'Дождь',      src: '/assets/music/rain.mp3' },
+    { id: 'white',  title: 'Белый шум',  src: '/assets/music/white.mp3' },
+  ];
 
-  onPreview(track: MusicTrack): void {
-    this.previewRequested.emit(track);
+  activeTrackId: string | null = null;
+  private audio: HTMLAudioElement | null = null;
+
+  onClose(): void {
+    this.stopAudio();
+    this.closed.emit();
   }
 
-  onSelect(track: MusicTrack): void {
-    this.trackSelected.emit(track);
+  onToggleTrack(track: InternalTrack): void {
+    if (this.activeTrackId === track.id) {
+      // пауза
+      this.stopAudio();
+      this.activeTrackId = null;
+      this.trackSelected.emit(null);
+      return;
+    }
+
+    // запуск нового трека
+    this.stopAudio();
+    this.audio = new Audio(track.src);
+    this.audio.loop = true;
+
+    const playPromise = this.audio.play();
+    if (playPromise) {
+      playPromise.catch(err => {
+        console.warn('[MusicMenu] autoplay blocked', err);
+      });
+    }
+
+    this.activeTrackId = track.id;
+    this.trackSelected.emit(track.id);
   }
 
-  onUnlock(track: MusicTrack): void {
-    this.unlockRequested.emit(track);
+  private stopAudio(): void {
+    if (this.audio) {
+      this.audio.pause();
+      this.audio.currentTime = 0;
+      this.audio = null;
+    }
   }
 }
-

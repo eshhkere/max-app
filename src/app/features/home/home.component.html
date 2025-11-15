@@ -33,6 +33,12 @@
     </button>
   </header>
 
+  <div
+  class="home__motivation"
+  *ngIf="(isGroupRunning || (isFocusActive() && sessionState() === 'focus')) && motivationText()">
+  {{ motivationText() }}
+  </div>
+
 <!-- Персонаж в SVG форме -->
 <div class="home__character-container">
   <div class="home__character-bg">
@@ -175,3 +181,9 @@
   (closed)="onMenuClosed()"
   (itemSelected)="onMenuItemSelected($event)">
 </app-sidebar-menu>
+
+<app-music-menu
+  *ngIf="showMusicMenu()"
+  (closed)="onMusicMenuClosed()"
+  (trackSelected)="onMusicTrackSelected($event)">
+</app-music-menu>

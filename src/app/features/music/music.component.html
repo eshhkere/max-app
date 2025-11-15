@@ -1,12 +1,4 @@
-<app-header [balance]="balance()" [progress]="progress()"></app-header>
-
-<section class="music">
-  <app-music-menu
-    [tracks]="tracks()"
-    [activeTrackId]="activeTrack()?.id ?? null"
-    (previewRequested)="onPreview($event.id)"
-    (trackSelected)="onSelect($event.id)"
-    (unlockRequested)="onUnlock($event.id)"
-  ></app-music-menu>
-</section>
-
+<app-music-menu
+  (trackSelected)="onTrackSelected($event)"
+  (closed)="onClosed()">
+</app-music-menu>

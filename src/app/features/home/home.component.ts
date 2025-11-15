@@ -1,4 +1,3 @@
-// src/app/features/home/home.component.ts
 import { NgIf } from '@angular/common';
 import { Component, effect, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
@@ -24,6 +23,7 @@ import {
 } from '../../shared/components/session-complete-modal/session-complete-modal.component';
 import { TagOption, SessionState } from '../../core/models/session.model';
 import { SidebarMenuComponent } from '../../shared/components/sidebar-menu/sidebar-menu.component';
+import { MusicMenuComponent } from '../../shared/components/music-menu/music-menu.component';
 
 enum RobotAnimation {
   NEUTRAL = 'NEUTRAL',
@@ -43,6 +43,7 @@ enum RobotAnimation {
     GiveUpModalComponent,
     SessionCompleteModalComponent,
     SidebarMenuComponent,
+    MusicMenuComponent
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
@@ -57,6 +58,7 @@ export class HomeComponent {
   private readonly authService = inject(AuthService);
 
   readonly robotState = signal<RobotAnimation>(RobotAnimation.NEUTRAL);
+  readonly showMusicMenu = signal(false);
 
   readonly activeTag = this.tagService.activeTag;
   readonly balance = this.currencyService.balance;
@@ -77,6 +79,42 @@ export class HomeComponent {
   readonly cancelSecondsLeft = this.sessionService.cancelSecondsLeft;
   readonly localTimerRunning = this.localTimer.isRunning;
 
+  readonly motivationText = signal<string | null>(null);
+  private motivationIntervalId: any = null;
+
+  private readonly MOTIVATION_MESSAGES: string[] = [
+    'Сделай этот фокус важным',
+    'Одно дело за раз — и ты в плюсе',
+    'Сейчас ты строишь своё будущее',
+    'Каждая минута — вклад в навык',
+    'Продолжай, ты на правильном пути',
+    'Сконцентрируйся, остальное подождёт',
+    'Меньше отвлечений — больше результата',
+    'Ты уже ближе, чем был вчера',
+    'Твой мозг скажет спасибо позже',
+    'Маленький шаг, но в верном направлении',
+    'Фокус — это суперсила, которую ты тренируешь',
+    'Сделай эту сессию максимально полезной',
+    'Ещё чуть‑чуть — и будет легче',
+    'Ты хозяин своего внимания',
+    'Отложи сомнения, делай действие',
+    'Тишина вокруг — сила внутри',
+    'Не гонись за идеалом, двигайся вперёд',
+    'Каждый фокус — плюс к уверенности',
+    'Сейчас важен только следующий шаг',
+    'Результат придёт, если досидеть',
+    'Отвлечения подождут, дело — нет',
+    'Твоя дисциплина уже впечатляет',
+    'Чем сложнее, тем ценнее результат',
+    'Ты можешь больше, чем думаешь',
+    'Фокус сегодня — свобода завтра',
+    'Ещё немного — и будет заслуженный отдых',
+    'Ты вкладываешься в себя, это главное',
+    'Сохраняй курс, не смотри по сторонам',
+    'Эта сессия двигает тебя вперёд',
+    'Ты молодец, что не сдался в начале',
+  ];
+
   // ---- эффекты завершения ----
 
   // одиночная сессия
@@ -89,6 +127,7 @@ export class HomeComponent {
         this.showCompleteModal.set(true);
         this.currencyService.balance.set(data.current_coins);
         this.robotState.set(RobotAnimation.VICTORY);
+        this.stopMotivation();
       }
     },
     { allowSignalWrites: true }
@@ -108,17 +147,19 @@ export class HomeComponent {
         this.currencyService.balance.set(data.current_coins);
         this.groupSession.groupCompleteData.set(null);
         this.robotState.set(RobotAnimation.VICTORY);
+        this.stopMotivation();
       }
     },
     { allowSignalWrites: true }
   );
 
-  // кооп: как только статус RUNNING — фокус-анимация
+  // кооп: как только статус RUNNING — фокус-анимация + мотивация
   readonly _groupRunningEffect = effect(
     () => {
       const status = this.groupSession.status();
       if (status === GroupStatus.RUNNING) {
         this.robotState.set(RobotAnimation.FOCUS);
+        this.startMotivation();
       }
     },
     { allowSignalWrites: true }
@@ -148,15 +189,6 @@ export class HomeComponent {
 
   get isGroupRunning(): boolean {
     return this.groupSession.status() === GroupStatus.RUNNING;
-  }
-
-  get groupTimerDisplay(): string {
-    const total = this.groupSession.remainingSeconds();
-    const minutes = Math.floor(total / 60);
-    const seconds = total % 60;
-    return `${minutes.toString().padStart(2, '0')}:${seconds
-      .toString()
-      .padStart(2, '0')}`;
   }
 
   get otherParticipants(): GroupParticipant[] {
@@ -230,8 +262,10 @@ export class HomeComponent {
 
     if (this.isFocusActive()) {
       this.robotState.set(RobotAnimation.FOCUS);
+      this.startMotivation();
     } else {
       this.robotState.set(RobotAnimation.NEUTRAL);
+      this.stopMotivation();
     }
   }
 
@@ -242,9 +276,11 @@ export class HomeComponent {
     if (this.isGroupRunning) {
       await this.groupSession.giveUp();
       this.robotState.set(RobotAnimation.DEFEAT);
+      this.stopMotivation();
       return;
     }
 
+    // перерыв
     if (!this.isFocusActive()) {
       if (this.localTimer.isRunning()) {
         this.localTimer.stopTimer();
@@ -254,6 +290,7 @@ export class HomeComponent {
       return;
     }
 
+    // одиночный фокус
     if (state === SessionState.IDLE) {
       const tag = this.activeTag()?.id || 'study';
       const comment = this.tagService.comment();
@@ -261,8 +298,10 @@ export class HomeComponent {
 
       if (this.isFocusActive()) {
         this.robotState.set(RobotAnimation.FOCUS);
+        this.startMotivation();
       } else {
         this.robotState.set(RobotAnimation.NEUTRAL);
+        this.stopMotivation();
       }
     } else if (state === SessionState.CANCEL_PERIOD) {
       await this.sessionService.cancelSession();
@@ -275,6 +314,7 @@ export class HomeComponent {
     this.showGiveUpModal.set(false);
     await this.sessionService.cancelSession(reasonCode);
     this.robotState.set(RobotAnimation.DEFEAT);
+    this.stopMotivation();
   }
 
   onGiveUpModalClosed(): void {
@@ -289,6 +329,7 @@ export class HomeComponent {
     this.localTimer.startTimer(this.breakMinutes());
 
     this.robotState.set(RobotAnimation.NEUTRAL);
+    this.stopMotivation();
   }
 
   onCompleteCancel(): void {
@@ -296,8 +337,10 @@ export class HomeComponent {
 
     if (this.isGroupRunning || this.sessionState() === SessionState.FOCUS) {
       this.robotState.set(RobotAnimation.FOCUS);
+      this.startMotivation();
     } else {
       this.robotState.set(RobotAnimation.NEUTRAL);
+      this.stopMotivation();
     }
   }
 
@@ -368,7 +411,8 @@ export class HomeComponent {
   }
 
   onMusicClick(): void {
-    console.log('🎵 Music button clicked');
+    // открываем модалку выбора музыки
+    this.showMusicMenu.set(true);
   }
 
   // ----------------- Меню / навигация -----------------
@@ -407,4 +451,58 @@ export class HomeComponent {
     console.log('📍 Unknown menu item:', itemId);
   }
 
+  // ---- мотивация ----
+
+  private startMotivation(): void {
+    if (!this.isFocusActive() && !this.isGroupRunning) {
+      return;
+    }
+
+    if (!this.motivationText()) {
+      this.motivationText.set(this.pickRandomMessage());
+    }
+
+    if (this.motivationIntervalId) {
+      clearInterval(this.motivationIntervalId);
+    }
+
+    this.motivationIntervalId = setInterval(() => {
+      this.motivationText.set(this.pickRandomMessage());
+    }, 15000);
+  }
+
+  private stopMotivation(): void {
+    if (this.motivationIntervalId) {
+      clearInterval(this.motivationIntervalId);
+      this.motivationIntervalId = null;
+    }
+    this.motivationText.set(null);
+  }
+
+  private pickRandomMessage(): string {
+    const list = this.MOTIVATION_MESSAGES;
+    if (!list.length) return '';
+    const index = Math.floor(Math.random() * list.length);
+    return list[index];
+  }
+
+  // ---- helpers ----
+
+  get groupTimerDisplay(): string {
+    const total = this.groupSession.remainingSeconds();
+    const minutes = Math.floor(total / 60);
+    const seconds = total % 60;
+    return `${minutes.toString().padStart(2, '0')}:${seconds
+      .toString()
+      .padStart(2, '0')}`;
+  }
+
+  onMusicMenuClosed(): void {
+    this.showMusicMenu.set(false);
+  }
+  
+  onMusicTrackSelected(trackId: string | null): void {
+    console.log('🎵 selected track from home:', trackId);
+    this.showMusicMenu.set(false);
+  }
 }
